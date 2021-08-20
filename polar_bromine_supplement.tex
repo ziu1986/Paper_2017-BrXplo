@@ -1,0 +1,109 @@
+\documentclass[manuscript]{copernicus}
+\graphicspath{{pictures/}}          % graphics
+\begin{document}
+\clearpage
+\setcounter{page}{1}
+
+\section*{Supplement}
+\subsection*{S.1 Heterogeneous reactions involving bromine used in the model}
+\begin{reaction}
+  \chem{HOBr}+\chem{HBr}\rightarrow\chem{Br_2}+\chem{H_2O}
+\end{reaction}
+\begin{reaction}
+  \chem{BrNO_3}+\chem{H_2O}\rightarrow\chem{HOBr}+\chem{HNO_3}
+\end{reaction}
+\begin{reaction}
+  \chem{ClNO_3}+\chem{HBr}\rightarrow\chem{BrCl}+\chem{HNO_3}
+\end{reaction}
+\begin{reaction}
+  \chem{BrNO_3}+\chem{HCl}\rightarrow\chem{BrCl}+\chem{HNO_3}
+\end{reaction}
+\begin{reaction}
+  \chem{HOCl}+\chem{HBr}\rightarrow\chem{BrCl}+\chem{H_2O}
+\end{reaction}
+\begin{reaction}
+  \chem{HOBr}+\chem{HCl}\rightarrow\chem{BrCl}+\chem{H_2O}
+\end{reaction}
+%
+\subsection*{S.2 Nassi-Shneiderman diagram}
+\begin{center}
+\includegraphics[height=0.90\textheight]{pictures/sup_airsnow_emission}
+\end{center}
+%
+\subsection*{S.3 Excerpt from \texttt{onemis} namelist}
+\begin{verbatim}
+&CTRL
+! ###########################################################################
+! ### GAS
+! ###########################################################################
+<list of gas emissions>
+EMIS_TYPE(9) = 'AirSnow'
+! ###########################################################################
+! ### AEROSOL
+! ###########################################################################
+<list of aerosol emissions>
+/
+&CPL_IMPORT
+<list of import fields>
+! ### AirSnow ###############################################################
+! Dry deposition fluxes
+imp_ddepflux_HOBR  = 'ddep_gp', 'ddepflux_HOBr'
+imp_ddepflux_BrNO3 = 'ddep_gp', 'ddepflux_BrNO3'                          
+imp_ddepflux_HBr   = 'ddep_gp', 'ddepflux_HBr'
+imp_ddepflux_O3    = 'ddep_gp', 'ddepflux_O3'
+! Multi-year sea ice fraction
+imp_sic_multi_year = 'import_grid', 'airsnow_mysic'
+/
+&CPL 
+L_LG       = F  ! EMISSIONS FOR LAGRANGIAN TRACERS
+<list of flux to tracer conversion>
+! ...Br2 and BrCl from airsnow
+F2T(13) = 'snow_air_flux_br2',  'Br2:M=2,SC=1.0',  'Br2:M=2,SC=1.0',
+F2T(14) = 'snow_air_flux_brcl', 'BrCl:M=2,SC=1.0', 'BrCl:M=2,SC=1.0',
+/
+&CTRL_AirSnow
+! Default values according to Toyota et al. 2011 parametrization
+r_crit_temp      = -15 ! Critical temperature [deg celsius]
+r_sun_theta_crit = 85  ! Critical sun zenith angle [deg]
+! Efficiency of bromine release due to ozone deposit ('dark','sunlit','land')
+r_trigger_1      = 0.001_dp, 0.075_dp, 0.0_dp
+/
+\end{verbatim}
+%
+\subsection*{S.4 \chem{BrO} total vertical column density zonal mean}
+\subsubsection*{S.4.1 GOME}
+\begin{center}
+\includegraphics[width=0.9\textwidth, clip, trim={2cm 0.75cm 2cm 1.75cm}]{pictures/GOME_BrO_tot_zonal_mean}
+\subsubsection*{S.4.2 EMAC (BrXplo\_mysic)}
+\includegraphics[width=0.9\textwidth, clip, trim={2cm 0.75cm 2cm 1.75cm}]{pictures/EMAC_BrO_tot_zonal_mean}
+\end{center}
+%
+\subsection*{S.5 Sensitivity study with increased surface resistance of \chem{O_3}}
+\subsubsection*{S.5.1 Northern hemisphere}
+\begin{center}
+\includegraphics[width=1\textwidth, angle=90]{pictures/rs_surface_ozone}
+\end{center}
+%
+\subsubsection*{S.5.2 Southern hemisphere}
+\begin{center}
+\includegraphics[width=1\textwidth, angle=90]{pictures/rs_surface_ozone_sh}
+\end{center}
+%
+\subsection*{S.6 Temporal correlation of modeled surface \chem{O_3} with observation}
+\subsubsection*{S.6.1 EMAC (BrXplo\_ref)}
+\begin{center}
+\includegraphics[height=0.45\textheight]{pictures/surface_ozone_corr_ref}
+\end{center}
+%
+\subsubsection*{S.6.2 EMAC (BrXplo\_mysic)}
+\begin{center}
+\includegraphics[height=0.45\textheight]{pictures/surface_ozone_corr_mysic}
+\end{center}
+%
+\subsubsection*{S.6.3 EMAC with increased surface resistance}
+\begin{center}
+\includegraphics[height=0.45\textheight]{pictures/surface_ozone_corr_mysic_rsnow}
+\end{center}
+
+
+\end{document}
